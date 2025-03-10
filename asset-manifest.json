@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/WebRTC_Analysis/static/css/main.6b628385.css",
+    "main.js": "/WebRTC_Analysis/static/js/main.37780799.js",
+    "static/js/453.a007dcb7.chunk.js": "/WebRTC_Analysis/static/js/453.a007dcb7.chunk.js",
+    "index.html": "/WebRTC_Analysis/index.html",
+    "main.6b628385.css.map": "/WebRTC_Analysis/static/css/main.6b628385.css.map",
+    "main.37780799.js.map": "/WebRTC_Analysis/static/js/main.37780799.js.map",
+    "453.a007dcb7.chunk.js.map": "/WebRTC_Analysis/static/js/453.a007dcb7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6b628385.css",
+    "static/js/main.37780799.js"
+  ]
+}
