@@ -1,5 +1,7 @@
 import './App.css';
 import { useState, useEffect, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import webrtcService from './webrtcService';
 
 function App() {
@@ -82,7 +84,10 @@ function MessageBubble({displayText, title}) {
   return (
     <div className="msg">
       <p className="grey">
-        <h3>{title}</h3>
+       <div className="msg-title"> 
+        <h3>{title}</h3> 
+        <button className="but inv" onClick={() => navigator.clipboard.writeText(displayText)}><FontAwesomeIcon icon={faCopy} /></button>
+        </div>
           {displayText}
       </p> 
     </div>
