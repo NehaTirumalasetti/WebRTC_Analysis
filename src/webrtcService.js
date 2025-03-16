@@ -3,10 +3,24 @@ let localStream, remoteStream, peerConnection;
 const configuration = {
     iceServers: [
     {
-        urls:['stun:stun1.1.google.com:19302', 'stun:stun2.1.google.com:19302']
+        urls:['stun:stun1.1.google.com:19302', 
+            'stun:stun2.1.google.com:19302',
+            'stun:71.84.73.60:3478',               
+            'turn:71.84.73.60:3478?transport=udp', 
+            'turn:71.84.73.60:5349?transport=tcp'  
+        ],
+        username:'test',
+        credential:'test123'
     },
     ]
 };
+
+// const configuration = {
+//     iceServers: [
+//         {   urls:'stun:stun1.1.google.com:19302'    },
+//         {   urls: 'stun:stun2.1.google.com:19302'   }
+//     ]
+// };
 const webrtcService = {
 async init() {
     localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false});
