@@ -8,6 +8,8 @@ function App() {
   const [option, setOption] = useState(null);
   const [sdpOffer, setsdpOffer] = useState(null);
   const [sdpAnswer, setsdpAnswer] = useState('');
+  const [connected, setConnected] = useState(false);
+  const [stats, setStats] = useState(null);
   const user1 = useRef(null);
   const user2 = useRef(null);
   let localStream = null;
@@ -21,11 +23,22 @@ function App() {
     }
   }
   initStream();
+  // return async () => {
+  //  await webrtcService.stopLog();
+  // }
   }, []);
+
+  let intervalID = setInterval(()=>{
+    if(sdpOffer != null && sdpAnswer !== '' && !connected && webrtcService.checkConnection()){
+      setConnected(true);
+      console.log('connection established');
+      clearInterval(intervalID);
+    }
+  }, 2000)
 
   function onGenerateSDP (){
     setOption('caller');
-    webrtcService.createOffer(setsdpOffer).then((offer) => {
+    webrtcService.createOffer(setsdpOffer, setStats).then((offer) => {
       setsdpOffer(offer[0]);
       // user2.current.srcObject = offer[1];
     }).catch(console.error);
@@ -43,10 +56,18 @@ function App() {
   }
 
   function handleOffer(){
-    webrtcService.createAnswer(sdpOffer, setsdpAnswer).then((answer) => {
+    webrtcService.createAnswer(sdpOffer, setsdpAnswer, setStats).then((answer) => {
       setsdpAnswer(answer[0]);
       // user1.current.srcObject = answer[1];
     }).catch(console.error);
+  }
+  
+  function hangUp() {
+    // webrtcService.stopLog();
+    setOption(null);
+    setConnected(false);
+    webrtcService.hangup();
+    webrtcService.exportToJSON();
   }
 
   return (
@@ -57,10 +78,13 @@ function App() {
         <video className="video-player"  id="user-2" autoPlay playsInline></video>
       </div>
       {!option &&  <ButtonBar onGenerateSDP={onGenerateSDP} onAcceptSDP={onAcceptSDP}></ButtonBar>}
-      {option==='caller' && <MessageBubble displayText={sdpOffer} title={'SDP Offer'}/>}
-      {option==='caller' && sdpOffer!==null && <InputBubble title={'answer'} onClick={handleAnswer} onChange={setsdpAnswer}/>}
-      {option==='receiver' &&<InputBubble title={'offer'} onClick={handleOffer} onChange={setsdpOffer}/>}
-      {option==='receiver'&& sdpAnswer!==null && <MessageBubble displayText={sdpAnswer} title={'SDP Answer'}/>}
+      {option==='caller' && !connected && <MessageBubble displayText={sdpOffer} title={'SDP Offer'}/>}
+      {option==='caller' && !connected && sdpOffer!==null && <InputBubble title={'answer'} onClick={handleAnswer} onChange={setsdpAnswer}/>}
+      {option==='receiver' && !connected && <InputBubble title={'offer'} onClick={handleOffer} onChange={setsdpOffer}/>}
+      {option==='receiver'&& !connected && sdpAnswer!==null && <MessageBubble displayText={sdpAnswer} title={'SDP Answer'}/>}
+      {connected && <Button className="hang" displayText={'Hang Up'} onClick={hangUp}></Button>}
+      {connected && stats && <h2>{`${option} statistics:`}</h2> }
+      {connected && stats && <StatsBubble stats={stats}/>}
     </div>
   );
 }
@@ -100,6 +124,29 @@ function InputBubble({title, onClick, onChange}) {
       <input type="text" className="ip" placeholder={`Paste SDP ${title}`} onChange={(value) => onChange(value.target.value)}/>
       <button className ="but acp" onClick={onClick} >Paste SDP {title}</button>
     </div>
+  )
+}
+
+function StatsBubble({stats}){
+  return (
+    <>
+      {[...stats].map((report) => (
+        <div key={report[1].id}>
+          <h3>{`Report type : ${report[1].type}`}</h3>
+          <span>{`Time : ${report[1].timestamp}`}<br/></span>
+          <span>{`ID : ${report[1].id}`}<br/></span>
+          {Object.keys(report[1]).map((key) => {
+            if (key !== 'id' && key !== 'timestamp' && key !== 'type') {
+              if (typeof report[1][key] === 'object') {
+                return <span>{`${key} : ${JSON.stringify(report[1][key])}`}<br/></span>
+              } else{
+              return <span>{`${key} : ${report[1][key]}`}<br/></span>
+              }
+            }
+           })}
+        </div>
+      ))}
+    </>
   )
 }
 
