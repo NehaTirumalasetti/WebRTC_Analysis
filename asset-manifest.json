@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/WebRTC_Analysis/static/css/main.93632b52.css",
-    "main.js": "/WebRTC_Analysis/static/js/main.84f11aae.js",
+    "main.css": "/WebRTC_Analysis/static/css/main.fda27367.css",
+    "main.js": "/WebRTC_Analysis/static/js/main.5c685d7d.js",
     "static/js/453.a007dcb7.chunk.js": "/WebRTC_Analysis/static/js/453.a007dcb7.chunk.js",
     "index.html": "/WebRTC_Analysis/index.html",
-    "main.93632b52.css.map": "/WebRTC_Analysis/static/css/main.93632b52.css.map",
-    "main.84f11aae.js.map": "/WebRTC_Analysis/static/js/main.84f11aae.js.map",
+    "main.fda27367.css.map": "/WebRTC_Analysis/static/css/main.fda27367.css.map",
+    "main.5c685d7d.js.map": "/WebRTC_Analysis/static/js/main.5c685d7d.js.map",
     "453.a007dcb7.chunk.js.map": "/WebRTC_Analysis/static/js/453.a007dcb7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.93632b52.css",
-    "static/js/main.84f11aae.js"
+    "static/css/main.fda27367.css",
+    "static/js/main.5c685d7d.js"
   ]
 }
